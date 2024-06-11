@@ -1,0 +1,14 @@
+player = {}
+player.size = 64
+player.posX = 128
+player.posY = 256
+player.r = math.rad(0)
+player.speed = 350
+player.sprite_sheet = love.graphics.newImage("assets/images/player.png")
+player.yline = 36
+player.sprite = love.graphics.newQuad(0, player.yline, 32, 36, player.sprite_sheet:getDimensions())
+player.xscale = 1.2
+player.yscale = 1.2
+player.anim_timer = 0.1
+player.frame = 1
+player.max_frame = 2
