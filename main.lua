@@ -20,7 +20,6 @@ sfx = love.audio.newSource("assets/sfx/plop.wav", "static")
 music = love.audio.newSource("assets/sfx/music.ogg", "stream")
 
 arrowList = {}
-arrorR = math.rad(0)
 mobX = 900
 mobY = 400
 
@@ -93,30 +92,39 @@ function input_utilisateur(dt)
 	end
 
 	-- Si on appuie sur espace
-	if love.keyboard.isDown("space") then
-		table.insert(arrowList, Arrow(player.posX, player.posY, arrorR))
-	end
+	-- if love.keyboard.isDown("space") then
+	-- 	table.insert(arrowList, Arrow(player.posX, player.posY, arrowR))
+	-- end
+
+	-- Si on appuie sur clic droit
+	if love.mouse.isDown(1) and not mousePressed then
+        mousePressed = true
+        local mouseX = love.mouse.getX()
+        local mouseY = love.mouse.getY()
+        local arrowR = math.atan2(mouseY - player.posY, mouseX - player.posX)
+        table.insert(arrowList, Arrow(player.posX, player.posY, arrowR))
+    end
+
+    if not love.mouse.isDown(1) then
+        mousePressed = false
+    end
 
 	if love.keyboard.isDown("up") and player.posY > 32 then
 		player.posY = player.posY - player.speed * dt
 		player.yline = 0
 		player.max_frame = 2
-		arrorR = math.rad(180)
 	elseif love.keyboard.isDown("down") and player.posY < 720 then
 		player.posY = player.posY + player.speed * dt
 		player.yline = 36 * 2
 		player.max_frame = 2
-		arrorR = math.rad(0)
 	elseif love.keyboard.isDown("left") and player.posX > 32 then
 		player.posX = player.posX - player.speed * dt
 		player.yline = 36 * 3
 		player.max_frame = 2
-		arrorR = math.rad(90)
 	elseif love.keyboard.isDown("right") and player.posX < 1250 then
 		player.posX = player.posX + player.speed * dt
 		player.yline = 36
 		player.max_frame = 2
-		arrorR = math.rad(-90)
 	else
 		player.max_frame = 1
 	end
