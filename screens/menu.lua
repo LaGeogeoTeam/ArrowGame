@@ -54,26 +54,30 @@ end
 function menu.draw()
     love.graphics.draw(bg, 0, 0, 0, 1, 1)
     love.graphics.setFont(fontBig)
-    love.graphics.print(txt.title, 460, 40, 0, 2.5, 2.5)
+    love.graphics.print(txt.title, 460, 40, 0, 2, 2)
     love.graphics.setFont(font)
-    love.graphics.print(txt.msg, 400, 360, 0, 2, 2)
+    love.graphics.print(txt.msg, 420, 600, 0, 1.5, 1.5)
 
-    -- Afficher les personnages disponibles
-    for i, character in ipairs(characters) do
-        local x = 200 + (i - 1) * 200
-        local y = 500
-        local scale = (i == selectedCharacter) and 0.7 or 0.5
-        local image = (selectedGender == "male") and character.maleImage or character.femaleImage
-        love.graphics.draw(image, x, y, 0, scale, scale)
+    -- Afficher le personnage sélectionné
+    local character = characters[selectedCharacter]
+    local image = (selectedGender == "male") and character.maleImage or character.femaleImage
+    local scale = 2
+    local x = 600 - (image:getWidth() * scale / 2)
+    local y = 400 - (image:getHeight() * scale / 2)
+    local width, height = image:getWidth() * scale, image:getHeight() * scale
 
-        -- Indicateur de sélection
-        if i == selectedCharacter then
-            love.graphics.rectangle("line", x - 5, y - 5, image:getWidth() * scale + 10, image:getHeight() * scale + 10)
-        end
-    end
+    -- Dessiner le carré de fond coloré
+    love.graphics.setColor(0, 0, 0, 0.5) -- noir semi-transparent
+    love.graphics.rectangle("fill", x - 20, y - 20, width + 40, height + 40)
+    love.graphics.setColor(1, 1, 1, 1) -- réinitialiser la couleur au blanc
+
+    -- Dessiner l'image du personnage sélectionné
+    love.graphics.draw(image, x, y, 0, scale, scale)
 
     -- Afficher le genre sélectionné
-    love.graphics.print("Gender: " .. selectedGender, 500, 400, 0, 2, 2)
+    love.graphics.print("Gender: " .. selectedGender, 720, 300, 0, 1, 1)
+    -- Afficher le nom du personnage sélectionné
+    love.graphics.print("Character: " .. character.name, 720, 250, 0, 1, 1)
 end
 
 function menu.keypressed(key)
