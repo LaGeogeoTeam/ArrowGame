@@ -16,5 +16,5 @@ function Arrow:update(dt)
 end
 
 function Arrow:draw()
-	love.graphics.draw(self.img, self.x, self.y, self.r + math.pi / 2, 1, 1, self.w / 2, self.h / 2)
+	love.graphics.draw(self.img, self.x, self.y, self.r + math.pi * 1.5, 1, 1, self.w / 2, self.h / 2)
 end
