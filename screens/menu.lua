@@ -78,6 +78,11 @@ function menu.draw()
     love.graphics.print("Gender: " .. selectedGender, 720, 300, 0, 1, 1)
     -- Afficher le nom du personnage sélectionné
     love.graphics.print("Character: " .. character.name, 720, 250, 0, 1, 1)
+	
+	-- Afficher l'aide en bas à gauche
+    love.graphics.setFont(fontSmall)
+    love.graphics.print("Left/Right: Change character", 10, love.graphics.getHeight() - 50)
+    love.graphics.print("Up/Down: Change gender", 10, love.graphics.getHeight() - 30)
 end
 
 function menu.keypressed(key)

@@ -16,6 +16,7 @@ mob = love.graphics.newImage("assets/images/snake.png")
 -- Police écriture
 font = love.graphics.newFont("assets/fonts/Bebas.ttf", 35)
 fontBig = love.graphics.newFont("assets/fonts/Bebas.ttf", 55)
+fontSmall = love.graphics.newFont("assets/fonts/Bebas.ttf", 20)
 sfx = love.audio.newSource("assets/sfx/plop.wav", "static")
 music = love.audio.newSource("assets/sfx/music.ogg", "stream")
 
