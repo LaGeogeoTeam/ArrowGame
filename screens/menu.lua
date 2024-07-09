@@ -1,28 +1,90 @@
 local menu = {}
 
+-- Liste des sprites de personnages avec genres
+local characters = {
+    {name = "Warrior", male = "assets/images/characters/warrior_m.png", female = "assets/images/characters/warrior_f.png"},
+    {name = "Healer", male = "assets/images/characters/healer_m.png", female = "assets/images/characters/healer_f.png"},
+    {name = "Mage", male = "assets/images/characters/mage_m.png", female = "assets/images/characters/mage_f.png"},
+    {name = "Ninja", male = "assets/images/characters/ninja_m.png", female = "assets/images/characters/ninja_f.png"},
+	{name = "Ranger", male = "assets/images/characters/ranger_m.png", female = "assets/images/characters/ranger_f.png"},
+    -- Ajoutez ici d'autres personnages si nécessaire
+}
+
+-- Variables pour le menu
+local selectedCharacter = 1
+local selectedGender = "male"  -- Par défaut "male"
+
 function menu.load()
-	txt = {}
-	txt.title = "MON JEU"
-	txt.msg = "Press space to start"
-	bg = love.graphics.newImage("assets/images/bgmenu.png")
+    txt = {}
+    txt.title = "MON JEU"
+    txt.msg = "Press space to start"
+    bg = love.graphics.newImage("assets/images/bgmenu.png")
+
+    -- Charger les images des personnages
+    for _, character in ipairs(characters) do
+        character.maleImage = love.graphics.newImage(character.male)
+        character.femaleImage = love.graphics.newImage(character.female)
+    end
 end
 
 function menu.update(dt)
-
+    -- Gestion de la sélection de personnage avec les touches de flèche
+    if love.keyboard.isDown("left") then
+        selectedCharacter = selectedCharacter - 1
+        if selectedCharacter < 1 then
+            selectedCharacter = #characters
+        end
+        love.timer.sleep(0.2)  -- Petit délai pour éviter la sélection rapide
+    elseif love.keyboard.isDown("right") then
+        selectedCharacter = selectedCharacter + 1
+        if selectedCharacter > #characters then
+            selectedCharacter = 1
+        end
+        love.timer.sleep(0.2)  -- Petit délai pour éviter la sélection rapide
+    elseif love.keyboard.isDown("up") or love.keyboard.isDown("down") then
+        if selectedGender == "male" then
+            selectedGender = "female"
+        else
+            selectedGender = "male"
+        end
+        love.timer.sleep(0.2)  -- Petit délai pour éviter la sélection rapide
+    end
 end
 
 function menu.draw()
-	love.graphics.draw(bg, 0, 0, 0, 1, 1)
-	love.graphics.setFont(fontBig)
-	love.graphics.print(txt.title, 460, 40, 0, 2.5, 2.5)
-	love.graphics.setFont(font)
-	love.graphics.print(txt.msg, 400, 360, 0, 2, 2)
+    love.graphics.draw(bg, 0, 0, 0, 1, 1)
+    love.graphics.setFont(fontBig)
+    love.graphics.print(txt.title, 460, 40, 0, 2.5, 2.5)
+    love.graphics.setFont(font)
+    love.graphics.print(txt.msg, 400, 360, 0, 2, 2)
+
+    -- Afficher les personnages disponibles
+    for i, character in ipairs(characters) do
+        local x = 200 + (i - 1) * 200
+        local y = 500
+        local scale = (i == selectedCharacter) and 0.7 or 0.5
+        local image = (selectedGender == "male") and character.maleImage or character.femaleImage
+        love.graphics.draw(image, x, y, 0, scale, scale)
+
+        -- Indicateur de sélection
+        if i == selectedCharacter then
+            love.graphics.rectangle("line", x - 5, y - 5, image:getWidth() * scale + 10, image:getHeight() * scale + 10)
+        end
+    end
+
+    -- Afficher le genre sélectionné
+    love.graphics.print("Gender: " .. selectedGender, 500, 400, 0, 2, 2)
 end
 
 function menu.keypressed(key)
-	if key == 'space' then
-		scene = "Map1"
-	end
+    if key == 'space' then
+        -- Mettre à jour la sprite_sheet du joueur avec le personnage et le genre sélectionnés
+        local character = characters[selectedCharacter]
+        local imagePath = (selectedGender == "male") and character.male or character.female
+        player.sprite_sheet = love.graphics.newImage(imagePath)
+        player.sprite = love.graphics.newQuad(0, player.yline, 32, 36, player.sprite_sheet:getDimensions())
+        scene = "Map1"
+    end
 end
 
 return menu

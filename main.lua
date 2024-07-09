@@ -76,7 +76,6 @@ function love.draw() -- Dessine le contenu
 			v:draw()
 		end
 	end
-	
 end
 
 
